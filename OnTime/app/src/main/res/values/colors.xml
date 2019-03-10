@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FFA000</color>
+    <color name="colorAccent">#9f9f9f</color>
+    <color name="colorBackground">#fff</color>
+    <color name="colorText">#efefef</color>
+    <color name="colorShadow">#efefef</color>
+    <color name="colorGblue">#4285f4</color>
+    <color name="alternativeLines">#1e89fa</color>
+    <color name="red">#f77</color>
+    <color name="green">#005d56</color>
+    <color name="active_dots">#ddd</color>
+    <color name="inactive_dots">#666</color>
+    <color name="backgroundcolor">#fcfcfc</color>
+    <color name="app">#0079d6</color>
+</resources>
