@@ -1,7 +1,6 @@
 package com.akshit.ontime;
 
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.app.TimePickerDialog;
@@ -10,29 +9,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
+import com.akshit.ontime.ui.HomeActivity;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class TimeTable extends AppCompatActivity {
@@ -200,7 +196,7 @@ public class TimeTable extends AppCompatActivity {
         intent.putExtra("Name",ar[i1]);
         intent.putExtra("Id",i1+2828);
         TaskStackBuilder stackBuilder=TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(Semester.class);
+        stackBuilder.addParentStack(HomeActivity.class);
         stackBuilder.addNextIntent(intent);
         PendingIntent pendingIntent=PendingIntent.getBroadcast(this,i1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         if (alarmManager != null&&!delete) {

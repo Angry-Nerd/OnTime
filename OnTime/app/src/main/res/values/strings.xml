@@ -44,4 +44,58 @@
     <string name="get_assignments_notes_syllabus_practicals_and_much_more">Get assignments, notes, syllabus, practicals and much more.</string>
     <string name="material_for_all_semesters_is_available_here">Material for all semesters is available here.</string>
     <string name="no_entry">No Entry</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="you_don_t_have_permissions_for_this_page">You don\'t have permissions for this page.</string>
+    <string name="id">Id</string>
+    <string name="log_in">Log In</string>
+    <string name="login">Login</string>
+    <string name="announcement">Announcement</string>
+    <string name="tt">TT</string>
+    <string name="select_reporter">Select reporter</string>
+    <string name="hello">Hello ...</string>
+    <string name="create_the_event">Create the Event.</string>
+
+
+    <string-array name="college_names">
+        <item>cgc.coe.edu.in</item>
+        <item>cgc.cec.edu.in</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>Accounts</item>
+        <item>Hostel</item>
+    </string-array>
+
+
+    <string-array name="Hostel">
+        <item></item>
+        <item>Sadbhavna</item>
+        <item>Shantikunj</item>
+    </string-array>
+
+    <string-array name="Sadbhavna">
+        <item></item>
+        <item>Floor</item>
+    </string-array>
+
+    <string-array name="Floor">
+        <item>Group</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="get_started">Get Started</string>
+    <string name="forgot_your_password">Forgot your password</string>
+    <string name="semesters">Semesters</string>
+
 </resources>

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFC107</color>
-    <color name="colorPrimaryDark">#FFA000</color>
-    <color name="colorAccent">#9f9f9f</color>
-    <color name="colorBackground">#fff</color>
-    <color name="colorText">#efefef</color>
-    <color name="colorShadow">#efefef</color>
-    <color name="colorGblue">#4285f4</color>
-    <color name="alternativeLines">#1e89fa</color>
-    <color name="red">#f77</color>
-    <color name="green">#005d56</color>
-    <color name="active_dots">#ddd</color>
-    <color name="inactive_dots">#666</color>
-    <color name="backgroundcolor">#fcfcfc</color>
-    <color name="app">#0079d6</color>
+    <color name="colorPrimary">#1565c0</color>
+    <color name="colorPrimaryDark">#1565c0</color>
+    <color name="colorAccent">#18a3fe</color>
+    <color name="textColorPrimary">@color/white</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gradient_start_color">#1e88e5</color>
+    <color name="gradient_end_color">#1565c0</color>
+
+    <color name="tab_indicator_grey">#18a3fe</color>
+    <color name="intro_title_color">#18a3fe</color>
+    <color name="intro_description_color">#18a3fe</color>
+    <color name="grey">#A6000000</color>
+    <color name="red">#D32F2F</color>
+
 </resources>

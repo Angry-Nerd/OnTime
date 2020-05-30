@@ -1,60 +1,37 @@
 {
   "project_info": {
-    "project_number": "657919728855",
-    "firebase_url": "https://on-time-57aa8.firebaseio.com",
-    "project_id": "on-time-57aa8",
-    "storage_bucket": "on-time-57aa8.appspot.com"
+    "project_number": "677620982547",
+    "firebase_url": "https://college-major.firebaseio.com",
+    "project_id": "college-major",
+    "storage_bucket": "college-major.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:657919728855:android:dcd14e69b4ce0be4",
+        "mobilesdk_app_id": "1:677620982547:android:9b20e242823ced0582f0e6",
         "android_client_info": {
           "package_name": "com.akshit.ontime"
         }
       },
       "oauth_client": [
         {
-          "client_id": "657919728855-pjin5o7ai2stlvlh7ql2d4ke1hb8vdbe.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.akshit.ontime",
-            "certificate_hash": "2c64320c2e6218df6f749eb0d480aede186dd403"
-          }
-        },
-        {
-          "client_id": "657919728855-v6ed0kmnidfe9kv3sn9e5r80hkp7g8vl.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.akshit.ontime",
-            "certificate_hash": "085d430a0cc2423e9513d57c55c1fd5da1788105"
-          }
-        },
-        {
-          "client_id": "657919728855-491p9a4q2qnl85rnpgcj2u5q8v0q1fcc.apps.googleusercontent.com",
+          "client_id": "677620982547-r8pe3445uus60ddhv8qdekjm7dqbi70l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyApTrfw_s4O9l-m-5_jmySuDVQwVFV54sc"
+          "current_key": "AIzaSyBu_giiWOXW_geTKoy27FVuzCTxYPecvmU"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "657919728855-491p9a4q2qnl85rnpgcj2u5q8v0q1fcc.apps.googleusercontent.com",
+              "client_id": "677620982547-r8pe3445uus60ddhv8qdekjm7dqbi70l.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
