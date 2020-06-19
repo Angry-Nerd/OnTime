@@ -5,7 +5,6 @@ import android.util.Log;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.akshit.ontime.models.SemesterDetails;
 import com.akshit.ontime.room.repository.SemesterRepository;
@@ -21,6 +20,7 @@ public class SemesterDetailsViewModel extends AndroidViewModel {
         super(application);
         Log.d("akshiban", "SemesterDetailsViewModel: came here");
         mSemesterRepository = new SemesterRepository(application);
+        semesterDetails = mSemesterRepository.getSemesterDetails();
     }
 
 
@@ -45,7 +45,7 @@ public class SemesterDetailsViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<SemesterDetails>> get() {
-        return mSemesterRepository.getSemesterDetails();
+        return semesterDetails;
     }
 
 }

@@ -16,6 +16,7 @@ import com.akshit.ontime.R;
 import com.akshit.ontime.constants.AppConstants;
 import com.akshit.ontime.constants.DbConstants;
 import com.akshit.ontime.databinding.ActivityLoginBinding;
+import com.akshit.ontime.managers.UserManager;
 import com.akshit.ontime.models.User;
 import com.akshit.ontime.ui.HomeActivity;
 import com.akshit.ontime.util.AppUtils;
@@ -126,13 +127,14 @@ public class LoginActivity extends AppCompatActivity {
      * @param universityDomain university's domain
      */
     private void getUserDetails(final String id, final String universityDomain) {
+        String email = id + "@" + universityDomain;
         final DocumentReference documentReference = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)
-                .document(universityDomain).collection(DbConstants.USERS).document(id);
+                .document(universityDomain).collection(DbConstants.USERS).document(email);
 
         final OnSuccessListener<DocumentSnapshot> onSuccessListener = userDoc -> {
-            SharedPreferenceManager.setLoggedInEmail(id + "@" + universityDomain);
+            SharedPreferenceManager.setLoggedInEmail(email);
             final User user = userDoc.toObject(User.class);
-            SharedPreferenceManager.setUser(user);
+            UserManager.getInstance().setUser(user);
             SharedPreferenceManager.setUniversityName(universityDomain);
             mBinding.loginProgress.setVisibility(View.GONE);
             startActivity(new Intent(this, HomeActivity.class));

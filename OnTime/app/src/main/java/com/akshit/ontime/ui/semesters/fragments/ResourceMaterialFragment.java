@@ -10,16 +10,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.akshit.ontime.R;
-import com.akshit.ontime.adapters.ResourceListAdapter;
+import com.akshit.ontime.adapters.ResourceMaterialAdapter;
+import com.akshit.ontime.adapters.SyllabusItemAdapter;
 import com.akshit.ontime.constants.AppConstants;
 import com.akshit.ontime.constants.DbConstants;
 import com.akshit.ontime.constants.IntentConstants;
 import com.akshit.ontime.managers.UserManager;
-import com.akshit.ontime.models.ResourceItem;
+import com.akshit.ontime.models.ResourceMaterialItem;
 import com.akshit.ontime.models.SemesterDetails;
+import com.akshit.ontime.models.SyllabusItem;
 import com.akshit.ontime.models.User;
 import com.akshit.ontime.util.AppContext;
 import com.akshit.ontime.util.AppUtils;
@@ -38,17 +41,23 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ResourcesFragment extends Fragment {
+public class ResourceMaterialFragment extends Fragment {
 
-    public static final String TAG = AppConstants.APP_PREFIX + ResourcesFragment.class.getSimpleName();
+    private ResourceMaterialAdapter mResourceMaterialAdapter;
+
+    public static final String TAG = AppConstants.APP_PREFIX + ResourceMaterialFragment.class.getSimpleName();
 
     private SemesterDetails mSemesterDetails;
 
-    private ResourceListAdapter mResourceListAdapter;
+    private SyllabusItemAdapter mResourceItemAdapter;
 
     private String mSubjectName;
 
-    public ResourcesFragment() {
+    private ProgressBar resourceMaterialProgressBar;
+
+
+
+    public ResourceMaterialFragment() {
         // Required empty public constructor
     }
 
@@ -57,7 +66,7 @@ public class ResourcesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_resources, container, false);
+        View view = inflater.inflate(R.layout.fragment_resource_material, container, false);
 
         mSemesterDetails = getActivity().getIntent().getParcelableExtra(IntentConstants.SEMESTER_DETAILS);
 
@@ -75,29 +84,32 @@ public class ResourcesFragment extends Fragment {
         }
 
         init(view);
-        fetchResources(view);
+
+        fetchResourceMaterials(view);
         return view;
     }
 
     /**
-     * Fetch the list of resources.
+     * Fetch the syllabus details.
+     *
      * @param view of the frame layout
      */
-    private void fetchResources(final View view) {
+    private void fetchResourceMaterials(final View view) {
         final User user = UserManager.getInstance().getUser();
         final String university = SharedPreferenceManager.getUniversityName();
         final String semesterName = NumberToNameConverter.convertNumber(mSemesterDetails.getSemesterNumber());
         final CollectionReference subjectCollection = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)
                 .document(university).collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
-                .document(semesterName).collection(DbConstants.SUBJECTS).document(mSubjectName).collection(DbConstants.RESOURCES);
+                .document(semesterName).collection(DbConstants.SUBJECTS).document(mSubjectName).collection(DbConstants.RESOURCES)
+                .document(DbConstants.RESOURCE_MATERIAL).collection(DbConstants.FILES);
         OnSuccessListener<QuerySnapshot> onSuccessListener = qs -> {
-            final List<ResourceItem> resourcesList = new ArrayList<>();
+            final List<ResourceMaterialItem> items = new ArrayList<>();
             for (DocumentSnapshot ds : qs.getDocuments()) {
-                Log.d(TAG, "fetchSubjectDetails: " + ds.toObject(ResourceItem.class));
-                resourcesList.add(ds.toObject(ResourceItem.class));
+                Log.d(TAG, "fetchSubjectDetails: " + ds.toObject(ResourceMaterialItem.class));
+                items.add(ds.toObject(ResourceMaterialItem.class));
             }
-            view.findViewById(R.id.resources_progress_bar).setVisibility(View.GONE);
-            mResourceListAdapter.setSemesterDetails(resourcesList);
+            resourceMaterialProgressBar.setVisibility(View.GONE);
+            mResourceMaterialAdapter.setResourceMaterialItems(items);
             if (getActivity() != null) {
                 AppUtils.enableTouch(getActivity());
             }
@@ -105,7 +117,7 @@ public class ResourcesFragment extends Fragment {
 
         OnFailureListener onFailureListener = e -> {
             Toast.makeText(AppContext.getContext(), "Unable to fetch subject details. Please retry later.", Toast.LENGTH_LONG).show();
-            view.findViewById(R.id.subject_progress_bar).setVisibility(View.GONE);
+            resourceMaterialProgressBar.setVisibility(View.GONE);
             if (getActivity() != null) {
                 AppUtils.enableTouch(getActivity());
             }
@@ -114,44 +126,14 @@ public class ResourcesFragment extends Fragment {
         FirebaseUtil.getFromCollection(subjectCollection, onSuccessListener, onFailureListener);
     }
 
-    private void init(View view) {
-        mResourceListAdapter = new ResourceListAdapter(getContext());
-        final RecyclerView subjectsList = view.findViewById(R.id.resource_list);
+    private void init(final View view) {
+        final RecyclerView recyclerView = view.findViewById(R.id.resource_material_recycler_view);
+        mResourceMaterialAdapter = new ResourceMaterialAdapter(getContext());
 
+        resourceMaterialProgressBar = view.findViewById(R.id.resource_material_progress_bar);
 
-
-        mResourceListAdapter.setOnResourceItemClickListener(resourceItem -> {
-            final String typeOfResource = resourceItem.getTypeOfResource();
-
-            switch (resourceItem.getTypeOfResource()) {
-                case "syllabus": {
-                    SyllabusFragment syllabusFragment = new SyllabusFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(IntentConstants.SUBJECT_DETAILS, mSubjectName);
-                    syllabusFragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.semester_fragment, syllabusFragment)
-                            .addToBackStack(null)
-                            .commit();
-                    break;
-                }
-                case "resource_material": {
-                    ResourceMaterialFragment resourceMaterialFragment = new ResourceMaterialFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(IntentConstants.SUBJECT_DETAILS, mSubjectName);
-                    resourceMaterialFragment.setArguments(bundle);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.semester_fragment, resourceMaterialFragment)
-                            .addToBackStack(null)
-                            .commit();
-                    break;
-                }
-            }
-
-        });
-
-        subjectsList.setHasFixedSize(true);
-        subjectsList.setLayoutManager(new LinearLayoutManager(getContext()));
-        subjectsList.setAdapter(mResourceListAdapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(mResourceMaterialAdapter);
     }
 }

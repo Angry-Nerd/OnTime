@@ -1,6 +1,7 @@
 package com.akshit.ontime.adapters;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.akshit.ontime.R;
 import com.akshit.ontime.models.SemesterDetails;
+import com.akshit.ontime.util.NumberToNameConverter;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.ViewHo
     }
 
     private String convertNumberToString(int semesterNumber) {
-        return "First";
+        return NumberToNameConverter.convertNumber(semesterNumber);
     }
 
     @Override
@@ -78,7 +80,9 @@ public class SemesterAdapter extends RecyclerView.Adapter<SemesterAdapter.ViewHo
             semesterLogo = itemView.findViewById(R.id.semester_logo);
             exploreSemesterBtn.setOnClickListener(v -> {
                 if (mOnSemesterClickListener != null) {
+                    exploreSemesterBtn.setClickable(false);
                     mOnSemesterClickListener.onClick(mSemesterDetails.get(getAdapterPosition()));
+                    new Handler().postDelayed(() -> exploreSemesterBtn.setClickable(true), 1000);
                 }
             });
         }

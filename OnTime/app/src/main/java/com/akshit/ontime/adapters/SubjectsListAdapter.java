@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.akshit.ontime.R;
-import com.akshit.ontime.models.SemesterDetails;
 import com.akshit.ontime.models.SubjectDetails;
 import com.bumptech.glide.Glide;
 
@@ -36,14 +34,14 @@ public class SubjectsListAdapter extends RecyclerView.Adapter<SubjectsListAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.semester_grid_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.subject_details_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull SubjectsListAdapter.ViewHolder holder, int position) {
         final SubjectDetails semesterDetails = mSubjectDetails.get(position);
-        holder.semesterName.setText(semesterDetails.getName());
-        Glide.with(mContext).load(semesterDetails.getLogoUrl()).placeholder(R.drawable.ic_launcher_background).into(holder.semesterLogo);
+        holder.subjectName.setText(semesterDetails.getNameOfSubject());
+        Glide.with(mContext).load(semesterDetails.getLogoUrl()).placeholder(R.drawable.ic_launcher_background).into(holder.subjectLogo);
     }
 
 
@@ -64,18 +62,15 @@ public class SubjectsListAdapter extends RecyclerView.Adapter<SubjectsListAdapte
 
     final class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView semesterName;
+        TextView subjectName;
 
-        Button exploreSemesterBtn;
-
-        ImageView semesterLogo;
+        ImageView subjectLogo;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            semesterName = itemView.findViewById(R.id.semester_name);
-            exploreSemesterBtn = itemView.findViewById(R.id.explore_semester);
-            semesterLogo = itemView.findViewById(R.id.semester_logo);
-            exploreSemesterBtn.setOnClickListener(v -> {
+            subjectName = itemView.findViewById(R.id.subject_name);
+            subjectLogo = itemView.findViewById(R.id.subject_logoUrl);
+            itemView.setOnClickListener(v -> {
                 if (mOnSemesterClickListener != null) {
                     mOnSemesterClickListener.onClick(mSubjectDetails.get(getAdapterPosition()));
                 }

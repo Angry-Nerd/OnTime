@@ -83,6 +83,7 @@ public class AppConstants {
      * Time stamp when semesters data last time synced.
      */
     public static final String LAST_TIME_SEMESTERS_SYNCED = "LAST_TIME_SEMESTERS_SYNCED";
+    public static final long ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
 
 
     /**

@@ -17,13 +17,13 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.akshit.ontime.Profile;
 import com.akshit.ontime.R;
 import com.akshit.ontime.adapters.SemesterAdapter;
 import com.akshit.ontime.constants.AppConstants;
 import com.akshit.ontime.constants.DbConstants;
 import com.akshit.ontime.constants.IntentConstants;
 import com.akshit.ontime.databinding.ActivityHomeBinding;
+import com.akshit.ontime.managers.UserManager;
 import com.akshit.ontime.models.SemesterDetails;
 import com.akshit.ontime.ui.semesters.SubjectActivity;
 import com.akshit.ontime.util.AppContext;
@@ -53,20 +53,24 @@ public class HomeActivity extends AppCompatActivity {
 
     private SemesterDetailsViewModel mSemesterDetailsViewModel;
 
+    //We should not fetch data again if we logout.
+    //Setting a variable which will prevent fetching the data again if user logs out.
+    private boolean isSignOut = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
+        mBinding.setHelloGreeting("Hello " + UserManager.getInstance().getUser().getDisplayName());
+
         setSupportActionBar(mBinding.homeToolbar);
 
         final ActionBar actionbar = getSupportActionBar();
-        if (actionbar != null) {
-            actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        }
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        //disable touch unitl we get data
+        //disable touch until we get data
         AppUtils.disableTouch(this);
 
         mSemesterAdapter = new SemesterAdapter(this);
@@ -76,7 +80,9 @@ public class HomeActivity extends AppCompatActivity {
 
         mSemesterDetailsViewModel.get().observe(this, (semesterDetails) -> {
             Log.d(TAG, "Semester details changed.");
-            observeSemesterDetails(semesterDetails);
+            if (!isSignOut) {
+                observeSemesterDetails(semesterDetails);
+            }
         });
 
 
@@ -95,6 +101,7 @@ public class HomeActivity extends AppCompatActivity {
      * @param semesterDetails changes semester details list
      */
     private void observeSemesterDetails(final List<SemesterDetails> semesterDetails) {
+        //TODO add this  && System.currentTimeMillis() - SharedPreferenceManager.getLastTimeSynced() > AppConstants.ONE_WEEK
         if (semesterDetails != null && semesterDetails.size() != 0) {
             mSemesterAdapter.setSemesterDetails(semesterDetails);
             mBinding.homeProgressBar.setVisibility(View.GONE);
@@ -124,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             mSemesterDetailsViewModel.insertAll(list.toArray(new SemesterDetails[0]));
 
-            //store the
+            //store the last access time of semesters
             SharedPreferenceManager.setLastTimeSemesterSynced(System.currentTimeMillis());
 //            new InsertAsyncTask(this).execute(mSemesterDetailsList.toArray(new SemesterDetails[0]));
             mBinding.homeProgressBar.setVisibility(View.GONE);
@@ -166,11 +173,13 @@ public class HomeActivity extends AppCompatActivity {
             int id = item.getItemId();
             switch (id) {
                 case R.id.logout: {
+                    isSignOut = true;
+                    mSemesterDetailsViewModel.deleteAll();
                     FirebaseUtil.signOut(this);
                     break;
                 }
                 case R.id.profile: {
-                    startActivity(new Intent(getApplicationContext(), Profile.class));
+//                    startActivity(new Intent(getApplicationContext(), Profile.class));
                     break;
                 }
 
@@ -191,14 +200,14 @@ public class HomeActivity extends AppCompatActivity {
 
 
     /**
-     * Class to instantiate the semster details view model class.
+     * Class to instantiate the semester details view model class.
      */
     private static class SemesterDetailsViewModelFactory implements ViewModelProvider.Factory {
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             try {
-                return modelClass.getConstructor(Application.class).newInstance((Application) AppContext.getContext());
+                return modelClass.getConstructor(Application.class).newInstance(AppContext.getContext());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 throw new RuntimeException();

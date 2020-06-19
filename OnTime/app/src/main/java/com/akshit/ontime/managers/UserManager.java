@@ -1,12 +1,10 @@
 package com.akshit.ontime.managers;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.akshit.ontime.constants.AppConstants;
 import com.akshit.ontime.constants.DbConstants;
 import com.akshit.ontime.models.User;
-import com.akshit.ontime.util.AppContext;
 import com.akshit.ontime.util.FirebaseUtil;
 import com.akshit.ontime.util.SharedPreferenceManager;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,13 +27,21 @@ public class UserManager {
     /**
      * User instance.
      */
-    private static User user;
+    private static User mUser;
 
     /**
      * Private constructor.
      */
     private UserManager() {
+        mUser = SharedPreferenceManager.getUser();
+    }
 
+    /**
+     * Get the user.
+     * @return user.
+     */
+    public User getUser() {
+        return mUser;
     }
 
     /**
@@ -55,6 +61,7 @@ public class UserManager {
     }
 
     public void fetchUserDetails() {
+        Log.d(TAG, "fetchUserDetails: ");
         if (!FirebaseUtil.isLoggedIn()) {
             Log.i(TAG, "User not logged in. Returning.");
             return;
@@ -67,6 +74,8 @@ public class UserManager {
         final OnSuccessListener<DocumentSnapshot> onSuccessListener = doc -> {
             if (doc.exists()) {
                 User docUser = doc.toObject(User.class);
+                mUser = docUser;
+                SharedPreferenceManager.setUser(docUser);
                 Log.i(TAG, "Got document " + docUser);
             } else {
                 Log.e(TAG, "Document do not exists.");
@@ -74,5 +83,10 @@ public class UserManager {
         };
         final OnFailureListener onFailureListener = o -> Log.d(TAG, "Error occurred." + o.getMessage());
         FirebaseUtil.getFromDocument(documentReference, onSuccessListener, onFailureListener);
+    }
+
+    public void setUser(User user) {
+        Log.d(TAG, "setUser: " + user);
+        mUser = user;
     }
 }

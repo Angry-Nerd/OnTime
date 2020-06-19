@@ -12,7 +12,6 @@ import com.akshit.ontime.ui.HomeActivity;
 import com.akshit.ontime.ui.auth.LoginActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -56,7 +55,6 @@ public class FirebaseUtil {
     public static FirebaseFirestore getDb() {
         return db;
     }
-
 
 
     private static void getUserDetails(String id, String domain, LoginActivity activity) {

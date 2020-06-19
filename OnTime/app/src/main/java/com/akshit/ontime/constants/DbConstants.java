@@ -126,4 +126,11 @@ public class DbConstants {
      * Subjects of the semester.
      */
     public static final String SUBJECTS = "subjects";
+    public static final String RESOURCES = "resources";
+    //TODO syllabus change to small case
+    public static final String SYLLABUS = "Syllabus";
+    public static final String SYLLABUS_LIST = "syllabus_list";
+    public static final String BOOKS_TO_REFER = "books_to_refer";
+    public static final String RESOURCE_MATERIAL = "resource_material";
+    public static final String FILES = "files";
 }
