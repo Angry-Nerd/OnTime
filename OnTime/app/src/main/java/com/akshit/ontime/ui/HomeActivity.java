@@ -25,6 +25,7 @@ import com.akshit.ontime.constants.IntentConstants;
 import com.akshit.ontime.databinding.ActivityHomeBinding;
 import com.akshit.ontime.managers.UserManager;
 import com.akshit.ontime.models.SemesterDetails;
+import com.akshit.ontime.models.User;
 import com.akshit.ontime.ui.semesters.SubjectActivity;
 import com.akshit.ontime.util.AppContext;
 import com.akshit.ontime.util.AppUtils;
@@ -53,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private SemesterDetailsViewModel mSemesterDetailsViewModel;
 
+    private User mUser;
+
     //We should not fetch data again if we logout.
     //Setting a variable which will prevent fetching the data again if user logs out.
     private boolean isSignOut = false;
@@ -62,8 +65,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
-        mBinding.setHelloGreeting("Hello " + UserManager.getInstance().getUser().getDisplayName());
-
+        mUser = UserManager.getInstance().getUser();
+        if (mUser != null) {
+            mBinding.setHelloGreeting("Hello " + UserManager.getInstance().getUser().getDisplayName());
+        } else {
+            Toast.makeText(this, "Unable to fetch the user details. Please check your internet connection.", Toast.LENGTH_SHORT).show();
+            UserManager.getInstance().fetchUserDetails();
+        }
         setSupportActionBar(mBinding.homeToolbar);
 
         final ActionBar actionbar = getSupportActionBar();

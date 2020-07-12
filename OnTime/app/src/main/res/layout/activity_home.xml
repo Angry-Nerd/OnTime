@@ -40,7 +40,7 @@
                     android:id="@+id/hello_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{helloGreeting, default="Hello ..."}'
+                    android:text='@{helloGreeting, default="Hello User"}'
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:layout_marginTop="8dp"

@@ -97,5 +97,7 @@
     <string name="get_started">Get Started</string>
     <string name="forgot_your_password">Forgot your password</string>
     <string name="semesters">Semesters</string>
+    <string name="sign_up_title">Sign Up</string>
+    <string name="register_user">Register</string>
 
 </resources>

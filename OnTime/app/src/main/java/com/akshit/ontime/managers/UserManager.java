@@ -60,6 +60,9 @@ public class UserManager {
         return instance;
     }
 
+    /**
+     * Method to fetch user details from fire store.
+     */
     public void fetchUserDetails() {
         Log.d(TAG, "fetchUserDetails: ");
         if (!FirebaseUtil.isLoggedIn()) {
@@ -85,7 +88,11 @@ public class UserManager {
         FirebaseUtil.getFromDocument(documentReference, onSuccessListener, onFailureListener);
     }
 
-    public void setUser(User user) {
+    /**
+     * Set the logged in user.
+     * @param user that is logged in
+     */
+    public void setUser(final User user) {
         Log.d(TAG, "setUser: " + user);
         mUser = user;
     }

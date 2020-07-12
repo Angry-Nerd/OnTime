@@ -24,21 +24,22 @@ import com.akshit.ontime.util.FirebaseUtil;
 import com.akshit.ontime.util.SharedPreferenceManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
 
     private static final String TAG = LoginActivity.class.getSimpleName();
     public ActivityLoginBinding mBinding;
-    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +50,6 @@ public class LoginActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AppUtils.setTopBar(this);
         }
-
-
-//        final GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestEmail()
-//                .build();
-//
-//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//        mBinding.signInButtonWithGoogle.setSize(SignInButton.SIZE_STANDARD);
-
     }
 
     private void login(final View v, final String id, final String password, final String domain) {
@@ -69,20 +61,6 @@ public class LoginActivity extends AppCompatActivity {
             AppUtils.disableTouch(this);
             mBinding.loginProgress.setVisibility(View.VISIBLE);
             loginUser(id, password, domain);
-//            FirebaseInstanceId.getInstance().getInstanceId()
-//                    .addOnCompleteListener(task -> {
-//                        if (!task.isSuccessful()) {
-//                            AppUtils.enableTouch(LoginActivity.this);
-//                            Log.w(TAG, "getInstanceId failed", task.getException());
-//                            Toast.makeText(this, "Unable to login. Please try again later", Toast.LENGTH_LONG).show();
-//                            //TODO add a crashlytics here when unable to login
-//                            return;
-//                        }
-//                        if (SharedPreferenceManager.getUserToken() == null) {
-//                            SharedPreferenceManager.setUserToken(task.getResult().getToken());
-//                        }
-//
-//                    });
 
         }
 
@@ -99,7 +77,16 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser(final String id, final String password, final String universityDomain) {
         final String userEmail = id + "@" + universityDomain;
         FirebaseUtil.getAuth().signInWithEmailAndPassword(userEmail, password)
-                .addOnSuccessListener(authResult -> getUserDetails(id, universityDomain))
+                .addOnSuccessListener(authResult -> {
+                    if (Objects.requireNonNull(authResult.getUser()).isEmailVerified()) {
+                        getUserDetails(id, universityDomain);
+                    } else {
+                        AppUtils.enableTouch(this);
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(this, "Your email is not verified. Please verify email first.", Toast.LENGTH_SHORT).show();
+                        mBinding.loginProgress.setVisibility(View.GONE);
+                    }
+                })
                 .addOnFailureListener(e -> {
                     AppUtils.enableTouch(LoginActivity.this);
                     mBinding.loginProgress.setVisibility(View.GONE);
@@ -127,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param universityDomain university's domain
      */
     private void getUserDetails(final String id, final String universityDomain) {
-        String email = id + "@" + universityDomain;
+        final String email = id + "@" + universityDomain;
         final DocumentReference documentReference = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)
                 .document(universityDomain).collection(DbConstants.USERS).document(email);
 
@@ -188,27 +175,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Call when sign in with google is clicked.
-     *
-     * @param view of the button
-     */
-    public void signInWithGoogle(final View view) {
-        signInWithGoogle();
-    }
-
-    /**
-     * Prompt user with IDs logged in.
-     */
-    private void signInWithGoogle() {
-        final Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        if (AppUtils.checkInternetConnectivity(this)) {
-            startActivityForResult(signInIntent, AppConstants.GOOGLE_SIGN_IN_REQUEST_CODE);
-        } else {
-            Toast.makeText(this, "Check your internet first", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -255,5 +221,15 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Unable to login.", Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Method to start activity for sign up.
+     *
+     * @param view of the sing up button
+     */
+    public void signUp(final View view) {
+        final Intent signUpIntent = new Intent(this, SignUpActivity.class);
+        startActivity(signUpIntent);
     }
 }
