@@ -62,6 +62,7 @@ public class SharedPreferenceManager {
     public static void clearAll() {
         setLoggedInEmail(null);
         setUniversityName(null);
+        setApplicationStatus(-1);
 //        setDepartment(null);
 //        setUserToken(null);
     }
@@ -110,5 +111,14 @@ public class SharedPreferenceManager {
 
     public static long getLastTimeSynced() {
         return sharedPreferences.getLong(AppConstants.LAST_TIME_SEMESTERS_SYNCED, 0);
+    }
+
+    public static int getApplicationStatus() {
+        return sharedPreferences.getInt(AppConstants.USER_APPLICATION_STATUS, 0);
+    }
+
+    public static void setApplicationStatus(int applicationStatus) {
+        editor.putInt(AppConstants.USER_APPLICATION_STATUS, applicationStatus);
+        editor.apply();
     }
 }

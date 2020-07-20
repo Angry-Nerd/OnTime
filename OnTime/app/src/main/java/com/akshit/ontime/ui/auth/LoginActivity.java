@@ -3,6 +3,7 @@ package com.akshit.ontime.ui.auth;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.akshit.ontime.constants.DbConstants;
 import com.akshit.ontime.databinding.ActivityLoginBinding;
 import com.akshit.ontime.managers.UserManager;
 import com.akshit.ontime.models.User;
+import com.akshit.ontime.ui.FirstSignInActivity;
 import com.akshit.ontime.ui.HomeActivity;
 import com.akshit.ontime.util.AppUtils;
 import com.akshit.ontime.util.FirebaseUtil;
@@ -63,8 +65,6 @@ public class LoginActivity extends AppCompatActivity {
             loginUser(id, password, domain);
 
         }
-
-
     }
 
     /**
@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUtil.getAuth().signInWithEmailAndPassword(userEmail, password)
                 .addOnSuccessListener(authResult -> {
                     if (Objects.requireNonNull(authResult.getUser()).isEmailVerified()) {
+                        Log.d(TAG, "loginUser: second");
                         getUserDetails(id, universityDomain);
                     } else {
                         AppUtils.enableTouch(this);
@@ -118,22 +119,33 @@ public class LoginActivity extends AppCompatActivity {
         final DocumentReference documentReference = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)
                 .document(universityDomain).collection(DbConstants.USERS).document(email);
 
-        final OnSuccessListener<DocumentSnapshot> onSuccessListener = userDoc -> {
-            SharedPreferenceManager.setLoggedInEmail(email);
-            final User user = userDoc.toObject(User.class);
-            UserManager.getInstance().setUser(user);
-            SharedPreferenceManager.setUniversityName(universityDomain);
-            mBinding.loginProgress.setVisibility(View.GONE);
-            startActivity(new Intent(this, HomeActivity.class));
-            finish();
-        };
-
-
         final OnFailureListener failureListener = e -> {
             FirebaseUtil.getAuth().signOut();
             AppUtils.enableTouch(this);
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             mBinding.loginProgress.setVisibility(View.GONE);
+        };
+        final OnSuccessListener<DocumentSnapshot> onSuccessListener = userDoc -> {
+            SharedPreferenceManager.setLoggedInEmail(email);
+            SharedPreferenceManager.setUniversityName(universityDomain);
+            if (userDoc.exists()) {
+                Log.d(TAG, "getUserDetails: yes");
+                final User user = userDoc.toObject(User.class);
+                UserManager.getInstance().setUser(user);
+                if (user.getApplicationStatus() == 1) {
+                    startActivity(new Intent(this, FirstSignInActivity.class));
+                } else {
+                    startActivity(new Intent(this, HomeActivity.class));
+                }
+                finish();
+            } else {
+                Log.d(TAG, "getUserDetails: no");
+                SharedPreferenceManager.setApplicationStatus(0);
+                new Handler().postDelayed(() -> {
+                    startActivity(new Intent(LoginActivity.this, FirstSignInActivity.class));
+                    finish();
+                }, 1000);
+            }
         };
 
 
@@ -231,5 +243,15 @@ public class LoginActivity extends AppCompatActivity {
     public void signUp(final View view) {
         final Intent signUpIntent = new Intent(this, SignUpActivity.class);
         startActivity(signUpIntent);
+    }
+
+    /**
+     * Start reset password activity.
+     *
+     * @param view of the reset password button
+     */
+    public void forgotPassword(View view) {
+        final Intent resetPasswordIntent = new Intent(this, ResetPassword.class);
+        startActivity(resetPasswordIntent);
     }
 }

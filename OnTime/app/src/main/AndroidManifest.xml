@@ -15,8 +15,10 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.semesters.SubjectActivity"
-            />
+        <activity
+            android:name=".ui.FirstSignInActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".ui.semesters.SubjectActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -30,7 +32,7 @@
             android:name=".ui.HomeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ResetPassword"
+            android:name=".ui.auth.ResetPassword"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".SemesterContents"
@@ -69,14 +71,13 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.WelcomeActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            />
-        <activity
-            android:name=".StudentInfo"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".Profile"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <!--        <activity-->
+        <!--            android:name=".StudentInfo"-->
+        <!--            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />-->
+        <!--        <activity-->
+        <!--            android:name=".Profile"-->
+        <!--            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />-->
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

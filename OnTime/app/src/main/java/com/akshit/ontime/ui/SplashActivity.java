@@ -3,6 +3,7 @@ package com.akshit.ontime.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -29,8 +30,14 @@ public class SplashActivity extends AppCompatActivity {
             if (SharedPreferenceManager.isWelcomeScreenShown()) {
                 //check for login
                 if (isLoggedIn()) {
-                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                    Log.d("akshiban", "onCreate: " + shouldFillApplication());
+                    if (shouldFillApplication() != 2) {
+                        startActivity(new Intent(SplashActivity.this, FirstSignInActivity.class));
+                    } else {
+                        startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                    }
                     finish();
+
                 } else {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();
@@ -41,5 +48,9 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, AppConstants.SPLASH_TIME);
+    }
+
+    private int shouldFillApplication() {
+        return SharedPreferenceManager.getApplicationStatus();
     }
 }

@@ -56,7 +56,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="you_don_t_have_permissions_for_this_page">You don\'t have permissions for this page.</string>
-    <string name="id">Id</string>
+    <string name="id">Email Id</string>
     <string name="log_in">Log In</string>
     <string name="login">Login</string>
     <string name="announcement">Announcement</string>

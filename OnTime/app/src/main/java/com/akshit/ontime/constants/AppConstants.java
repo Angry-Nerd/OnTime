@@ -84,13 +84,19 @@ public class AppConstants {
      */
     public static final String LAST_TIME_SEMESTERS_SYNCED = "LAST_TIME_SEMESTERS_SYNCED";
     public static final long ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+    public static final String USER_APPLICATION_STATUS = "USER_APPLICATION_STATUS";
 
+    static {
+//        NOTIFICATION_TYPES.put(NotificationConstants.ANNOUNCEMENT, 1001);
+//        NOTIFICATION_TYPES.put(NotificationConstants.CLUB_EVENT, 1002);
+    }
 
     /**
      * Private Constructor.
      */
     private AppConstants() {
     }
+
 
     /**
      * States of the TT.
@@ -100,12 +106,5 @@ public class AppConstants {
         RESEARCHING,
         WORK_IN_PROGRESS,
         RESOLVED
-    }
-
-
-
-    static {
-//        NOTIFICATION_TYPES.put(NotificationConstants.ANNOUNCEMENT, 1001);
-//        NOTIFICATION_TYPES.put(NotificationConstants.CLUB_EVENT, 1002);
     }
 }

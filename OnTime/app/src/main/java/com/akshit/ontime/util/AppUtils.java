@@ -133,4 +133,13 @@ public class AppUtils {
         builder.setPositiveButton("Retry", onClickListener);
         builder.show();
     }
+
+    public static String checkEmpty(String... texts) {
+        for (String text : texts) {
+            if (text.isEmpty()) {
+                return "Every field must be filled.";
+            }
+        }
+        return null;
+    }
 }

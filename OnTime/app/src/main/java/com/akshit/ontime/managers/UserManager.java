@@ -65,7 +65,8 @@ public class UserManager {
      */
     public void fetchUserDetails() {
         Log.d(TAG, "fetchUserDetails: ");
-        if (!FirebaseUtil.isLoggedIn()) {
+        int applicationStatus = SharedPreferenceManager.getApplicationStatus();
+        if (!FirebaseUtil.isLoggedIn() || applicationStatus == 0 || applicationStatus == 1) {
             Log.i(TAG, "User not logged in. Returning.");
             return;
         }

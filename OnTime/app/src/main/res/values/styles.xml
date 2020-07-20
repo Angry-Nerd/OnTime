@@ -9,6 +9,7 @@
 
 
     </style>
+
     <style name="AppTheme_WhiteAccent">
         <item name="colorAccent">#428ed9</item> <!-- Whatever color you want-->
     </style>
@@ -16,6 +17,7 @@
     <style name="myDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowNoTitle">true</item>
     </style>
+
     <style name="progressBarBlue" parent="@style/Theme.AppCompat">
         <item name="colorAccent">@color/colorAccent</item>
     </style>
