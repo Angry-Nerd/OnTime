@@ -93,7 +93,7 @@ public class SyllabusFragment extends Fragment {
         final String university = SharedPreferenceManager.getUniversityName();
         final String semesterName = NumberToNameConverter.convertNumber(mSemesterDetails.getSemesterNumber());
         final CollectionReference subjectCollection = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)
-                .document(university).collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
+                .document("cgc.coe.edu.in").collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
                 .document(semesterName).collection(DbConstants.SUBJECTS).document(mSubjectName).collection(DbConstants.RESOURCES)
                 .document(DbConstants.SYLLABUS).collection(DbConstants.BOOKS_TO_REFER);
         OnSuccessListener<QuerySnapshot> onSuccessListener = qs -> {
@@ -130,7 +130,7 @@ public class SyllabusFragment extends Fragment {
         final String university = SharedPreferenceManager.getUniversityName();
         final String semesterName = NumberToNameConverter.convertNumber(mSemesterDetails.getSemesterNumber());
         final CollectionReference subjectCollection = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)
-                .document(university).collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
+                .document("cgc.coe.edu.in").collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
                 .document(semesterName).collection(DbConstants.SUBJECTS).document(mSubjectName).collection(DbConstants.RESOURCES)
                 .document(DbConstants.SYLLABUS).collection(DbConstants.SYLLABUS_LIST);
         OnSuccessListener<QuerySnapshot> onSuccessListener = qs -> {

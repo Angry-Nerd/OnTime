@@ -3,6 +3,7 @@ package com.akshit.ontime.ui;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +47,9 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
+    /**
+     * Class tag.
+     */
     public static final String TAG = AppConstants.APP_PREFIX + HomeActivity.class.getSimpleName();
 
     private ActivityHomeBinding mBinding;
@@ -57,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
     private User mUser;
 
     //We should not fetch data again if we logout.
-    //Setting a variable which will prevent fetching the data again if user logs out.
+    //This variable will prevent fetching the data again if user logs out.
     private boolean isSignOut = false;
 
     @Override
@@ -69,8 +73,10 @@ public class HomeActivity extends AppCompatActivity {
         if (mUser != null) {
             mBinding.setHelloGreeting("Hello " + UserManager.getInstance().getUser().getDisplayName());
         } else {
-            Toast.makeText(this, "Unable to fetch the user details. Please check your internet connection.", Toast.LENGTH_SHORT).show();
-            UserManager.getInstance().fetchUserDetails();
+            Toast.makeText(this, "Unable to fetch the user details. Please check your internet connection or contact admin.", Toast.LENGTH_LONG).show();
+//            UserManager.getInstance().fetchUserDetails();
+            new Handler().postDelayed(() -> finish(), 2000);
+            return;
         }
         setSupportActionBar(mBinding.homeToolbar);
 
@@ -83,6 +89,8 @@ public class HomeActivity extends AppCompatActivity {
 
         mSemesterAdapter = new SemesterAdapter(this);
 
+        initNavView();
+        initRecyclerView();
         //view model
         mSemesterDetailsViewModel = new ViewModelProvider(this, new SemesterDetailsViewModelFactory()).get(SemesterDetailsViewModel.class);
 
@@ -98,8 +106,7 @@ public class HomeActivity extends AppCompatActivity {
         mBinding.homeSwipe.setOnRefreshListener(() -> mSemesterDetailsViewModel.deleteAll());
 
 
-        initNavView();
-        initRecyclerView();
+
 
     }
 
@@ -153,7 +160,7 @@ public class HomeActivity extends AppCompatActivity {
             mBinding.homeSwipe.setRefreshing(false);
         };
         //TODO update stream
-        final CollectionReference collectionReference = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY).document(universityName)
+        final CollectionReference collectionReference = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY).document("cgc.coe.edu.in")
                 .collection(DbConstants.STREAM).document("CSE").collection(DbConstants.SEMESTERS);
         FirebaseUtil.getFromCollection(collectionReference, onSuccessListener, onFailureListener);
     }

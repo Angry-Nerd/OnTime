@@ -18,39 +18,42 @@ import static com.akshit.ontime.util.FirebaseUtil.isLoggedIn;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private ActivitySplashBinding mBinding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
+        boolean shouldShowLoginScreen = false, shouldShowWelcomeScreen = false;
+        if (SharedPreferenceManager.isWelcomeScreenShown()) {
+            if (!isLoggedIn()) {
+                shouldShowLoginScreen = true;
+            }
+        } else {
+            shouldShowWelcomeScreen = true;
+        }
+        boolean finalShouldShowWelcomeScreen = shouldShowWelcomeScreen;
+        boolean finalShouldShowLoginScreen = shouldShowLoginScreen;
         new Handler().postDelayed(() -> {
             //TODO check for if update required
-            if (SharedPreferenceManager.isWelcomeScreenShown()) {
-                //check for login
-                if (isLoggedIn()) {
-                    Log.d("akshiban", "onCreate: " + shouldFillApplication());
-                    if (shouldFillApplication() != 2) {
-                        startActivity(new Intent(SplashActivity.this, FirstSignInActivity.class));
-                    } else {
-                        startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-                    }
-                    finish();
-
-                } else {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
-                }
-            } else {
-                //open the viewpager activity
+            if (finalShouldShowWelcomeScreen) {
                 startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+                finish();
+            } else {
+                if (finalShouldShowLoginScreen) {
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                } else {
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+//                    if (shouldFillApplication() != 2) {
+//                        startActivity(new Intent(SplashActivity.this, FirstSignInActivity.class));
+//                    } else {
+//
+//                    }
+                }
                 finish();
             }
         }, AppConstants.SPLASH_TIME);
     }
 
-    private int shouldFillApplication() {
-        return SharedPreferenceManager.getApplicationStatus();
-    }
+//    private int shouldFillApplication() {
+//        return SharedPreferenceManager.getApplicationStatus();
+//    }
 }

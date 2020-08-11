@@ -18,7 +18,8 @@
         <activity
             android:name=".ui.FirstSignInActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ui.semesters.SubjectActivity" />
+        <activity android:name=".ui.semesters.SubjectActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

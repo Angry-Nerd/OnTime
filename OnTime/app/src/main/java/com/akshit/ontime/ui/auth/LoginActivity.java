@@ -3,7 +3,6 @@ package com.akshit.ontime.ui.auth;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.akshit.ontime.constants.DbConstants;
 import com.akshit.ontime.databinding.ActivityLoginBinding;
 import com.akshit.ontime.managers.UserManager;
 import com.akshit.ontime.models.User;
-import com.akshit.ontime.ui.FirstSignInActivity;
 import com.akshit.ontime.ui.HomeActivity;
 import com.akshit.ontime.util.AppUtils;
 import com.akshit.ontime.util.FirebaseUtil;
@@ -79,12 +77,11 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUtil.getAuth().signInWithEmailAndPassword(userEmail, password)
                 .addOnSuccessListener(authResult -> {
                     if (Objects.requireNonNull(authResult.getUser()).isEmailVerified()) {
-                        Log.d(TAG, "loginUser: second");
                         getUserDetails(id, universityDomain);
                     } else {
                         AppUtils.enableTouch(this);
                         FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(this, "Your email is not verified. Please verify email first.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Your email is not verified. Please verify email first.", Toast.LENGTH_LONG).show();
                         mBinding.loginProgress.setVisibility(View.GONE);
                     }
                 })
@@ -129,22 +126,22 @@ public class LoginActivity extends AppCompatActivity {
             SharedPreferenceManager.setLoggedInEmail(email);
             SharedPreferenceManager.setUniversityName(universityDomain);
             if (userDoc.exists()) {
-                Log.d(TAG, "getUserDetails: yes");
                 final User user = userDoc.toObject(User.class);
                 UserManager.getInstance().setUser(user);
-                if (user.getApplicationStatus() == 1) {
-                    startActivity(new Intent(this, FirstSignInActivity.class));
-                } else {
-                    startActivity(new Intent(this, HomeActivity.class));
-                }
+//                if (user.getApplicationStatus() == 1) {
+//                    startActivity(new Intent(this, FirstSignInActivity.class));
+//                } else {
+                startActivity(new Intent(this, HomeActivity.class));
+//                }
                 finish();
             } else {
-                Log.d(TAG, "getUserDetails: no");
-                SharedPreferenceManager.setApplicationStatus(0);
-                new Handler().postDelayed(() -> {
-                    startActivity(new Intent(LoginActivity.this, FirstSignInActivity.class));
-                    finish();
-                }, 1000);
+                //TODO notify admin
+                Toast.makeText(this, "You don't exist in system. Admin is notified and an action will be taken sooner.", Toast.LENGTH_LONG).show();
+//                SharedPreferenceManager.setApplicationStatus(0);
+//                new Handler().postDelayed(() -> {
+//                    startActivity(new Intent(LoginActivity.this, FirstSignInActivity.class));
+//                    finish();
+//                }, 1000);
             }
         };
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akshit.ontime.R;
@@ -48,6 +49,8 @@ public class ResourcesFragment extends Fragment {
 
     private String mSubjectName;
 
+    private TextView mSubjectNameTV;
+
     public ResourcesFragment() {
         // Required empty public constructor
     }
@@ -59,10 +62,12 @@ public class ResourcesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_resources, container, false);
 
+        mSubjectNameTV = view.findViewById(R.id.subject_name);
         mSemesterDetails = getActivity().getIntent().getParcelableExtra(IntentConstants.SEMESTER_DETAILS);
 
         if (getArguments() != null) {
             mSubjectName = getArguments().getString(IntentConstants.SUBJECT_DETAILS);
+            mSubjectNameTV.setText(mSubjectName);
             Log.d(TAG, "Got semester details " + mSemesterDetails + mSubjectName);
         } else {
             Toast.makeText(getContext(), "There's some error. Please retry again.", Toast.LENGTH_LONG).show();
@@ -88,7 +93,7 @@ public class ResourcesFragment extends Fragment {
         final String university = SharedPreferenceManager.getUniversityName();
         final String semesterName = NumberToNameConverter.convertNumber(mSemesterDetails.getSemesterNumber());
         final CollectionReference subjectCollection = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)
-                .document(university).collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
+                .document("cgc.coe.edu.in").collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
                 .document(semesterName).collection(DbConstants.SUBJECTS).document(mSubjectName).collection(DbConstants.RESOURCES);
         OnSuccessListener<QuerySnapshot> onSuccessListener = qs -> {
             final List<ResourceItem> resourcesList = new ArrayList<>();
@@ -123,7 +128,7 @@ public class ResourcesFragment extends Fragment {
         mResourceListAdapter.setOnResourceItemClickListener(resourceItem -> {
             final String typeOfResource = resourceItem.getTypeOfResource();
 
-            switch (resourceItem.getTypeOfResource()) {
+            switch (typeOfResource) {
                 case "syllabus": {
                     SyllabusFragment syllabusFragment = new SyllabusFragment();
                     Bundle bundle = new Bundle();

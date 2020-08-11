@@ -54,11 +54,11 @@ public class SyllabusItemAdapter extends RecyclerView.Adapter<SyllabusItemAdapte
         final StringBuilder markdownText = new StringBuilder();
         markdownText.append("**").append(syllabusItem.getTitle()).append("**");
         if (syllabusItem.getSubTopics() != null) {
-            markdownText.append("<ul>");
+            markdownText.append("<ol>");
             for (String subtopic : syllabusItem.getSubTopics()) {
                 markdownText.append("<li>").append(subtopic).append("</li>");
             }
-            markdownText.append("</ul>");
+            markdownText.append("</ol>");
         }
         final Spanned markdown = markwon.render(markwon.parse(markdownText.toString()));
 

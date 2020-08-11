@@ -64,10 +64,11 @@ public class UserManager {
      * Method to fetch user details from fire store.
      */
     public void fetchUserDetails() {
-        Log.d(TAG, "fetchUserDetails: ");
-        int applicationStatus = SharedPreferenceManager.getApplicationStatus();
-        if (!FirebaseUtil.isLoggedIn() || applicationStatus == 0 || applicationStatus == 1) {
-            Log.i(TAG, "User not logged in. Returning.");
+        Log.d(TAG, "Fetching user details from firebase.");
+        setUser(SharedPreferenceManager.getUser());
+//        int applicationStatus = SharedPreferenceManager.getApplicationStatus();
+//         || applicationStatus == 0 || applicationStatus == 1
+        if (!FirebaseUtil.isLoggedIn()) {
             return;
         }
         final String university = SharedPreferenceManager.getUniversityName();

@@ -40,4 +40,6 @@ public class CollegeApplication extends Application {
         }
     }
 
+    //TODO s
+    //1. Change university name
 }

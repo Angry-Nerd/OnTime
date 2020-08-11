@@ -67,7 +67,7 @@ public class FirstSignInActivity extends AppCompatActivity {
 
         final String check = AppUtils.checkEmpty(firstName, lastName, emailId, college, stream);
         if (check != null) {
-            Toast.makeText(this, check, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, check, Toast.LENGTH_LONG).show();
             return;
         }
         if (!firstName.matches("^[A-Za-z]+$")) {
@@ -96,7 +96,7 @@ public class FirstSignInActivity extends AppCompatActivity {
         user.setCollege(college);
         user.setStream(stream);
         user.setUserName(emailId.split("@")[0]);
-        user.setApplicationStatus(1);
+//        user.setApplicationStatus(1);
         final String university = SharedPreferenceManager.getUniversityName();
 
         final DocumentReference documentReference = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)

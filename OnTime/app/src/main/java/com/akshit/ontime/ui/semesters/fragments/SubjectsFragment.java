@@ -52,8 +52,9 @@ public class SubjectsFragment extends Fragment {
      * Class tag.
      */
     public static final String TAG = AppConstants.APP_PREFIX + SubjectsFragment.class.getSimpleName();
+
     /**
-     * Seletced Semester details.
+     * Selected Semester details.
      */
     private SemesterDetails mSemesterDetails;
     private SubjectsListAdapter mSubjectsListAdapter;
@@ -94,7 +95,7 @@ public class SubjectsFragment extends Fragment {
 
 
         semesterName = NumberToNameConverter.convertNumber(mSemesterDetails.getSemesterNumber());
-        Log.d(TAG, "onCreateView: "+semesterName);
+        Log.d(TAG, "onCreateView: " + semesterName);
         init(view);
         observeSubjects(view);
         return view;
@@ -121,7 +122,7 @@ public class SubjectsFragment extends Fragment {
         final User user = UserManager.getInstance().getUser();
         final String university = SharedPreferenceManager.getUniversityName();
         final CollectionReference subjectCollection = FirebaseUtil.getDb().collection(DbConstants.UNIVERSITY)
-                .document(university).collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
+                .document("cgc.coe.edu.in").collection(DbConstants.STREAM).document(user.getStream()).collection(DbConstants.SEMESTERS)
                 .document(semesterName).collection(DbConstants.SUBJECTS);
         OnSuccessListener<QuerySnapshot> onSuccessListener = qs -> {
             final List<SubjectDetails> subjectDetailsList = new ArrayList<>();

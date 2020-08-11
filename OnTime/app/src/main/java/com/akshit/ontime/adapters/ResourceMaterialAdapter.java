@@ -47,7 +47,7 @@ public class ResourceMaterialAdapter extends RecyclerView.Adapter<ResourceMateri
         holder.titleOfFile.setText(resourceMaterialItem.getTitleOfFile());
         holder.downloadButton.setOnClickListener(v -> {
             DownloadManager.getInstance().downloadFile(resourceMaterialItem.getDownloadUrl(), resourceMaterialItem.getTitleOfFile(), resourceMaterialItem.getFileExtension());
-            Toast.makeText(mContext, resourceMaterialItem.getDownloadUrl(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(mContext, resourceMaterialItem.getDownloadUrl(), Toast.LENGTH_LONG).show();
         });
     }
 

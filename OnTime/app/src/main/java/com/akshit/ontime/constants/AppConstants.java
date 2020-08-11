@@ -24,7 +24,7 @@ public class AppConstants {
     /**
      * Time for the splash screen.
      */
-    public static final long SPLASH_TIME = 1000;
+    public static final long SPLASH_TIME = 2000;
 
     /**
      * Name of the university with which user logged in.

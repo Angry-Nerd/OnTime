@@ -34,7 +34,7 @@ public class User implements Parcelable {
     private String token;
     private List<String> subscribedTopics;
     private String stream;
-    private int applicationStatus;
+//    private int applicationStatus;
     private Map<String, Object> otherProperties;
 
 
@@ -59,7 +59,7 @@ public class User implements Parcelable {
         token = in.readString();
         subscribedTopics = in.createStringArrayList();
         stream = in.readString();
-        applicationStatus = in.readInt();
+//        applicationStatus = in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -101,6 +101,6 @@ public class User implements Parcelable {
         dest.writeString(token);
         dest.writeStringList(subscribedTopics);
         dest.writeString(stream);
-        dest.writeInt(applicationStatus);
+//        dest.writeInt(applicationStatus);
     }
 }
